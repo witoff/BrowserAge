@@ -8,6 +8,8 @@ TODO:
     And automate some testing for coverage
  2. Find a better syntax than all these if statements
  	...framework that takes an array of vers, and returns best base match
+	Add MSIE
+	Add Opera
 
 """
 
@@ -91,7 +93,7 @@ class UaChrome(Ua):
 
 class UaFirefox(object):
 	def getReleaseDate(self):
-		# http://www.oldapps.com/google_chrome.php
+		# https://wiki.mozilla.org/Releases/Old/2011 
 		matches = re.compile('Firefox/[a-zA-Z0-9\.]*').search(self.ua)
 		if not matches:
 			return None
@@ -108,4 +110,10 @@ class UaMsie(object):
 
 class UaSafari(object):
 	def getReleaseDat(self):
+		# from http://en.wikipedia.org/wiki/Safari_version_history
+		return 0
+
+class UaOpera(object):
+	def getReleaseDat(self):
+		# from 
 		return 0
