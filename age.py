@@ -105,6 +105,7 @@ class UaFirefox(object):
 			return date(2009, 4, 24)
 
 class UaMsie(object):
+	"""http://en.wikipedia.org/wiki/Timeline_of_web_browsers"""
 	def getReleaseDate(self):
 		return 0
 
