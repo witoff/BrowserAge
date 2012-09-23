@@ -3,13 +3,13 @@ from datetime import *
 
 """
 TODO:
- 1. Pull in a whole bunch of UAs from here: 
+ ...Build a framework that takes an array of vers, and returns best base match
+
+ ...Pull in a whole bunch of UAs from here: 
     See this: http://www.useragentstring.com/pages/All/
     And automate some testing for coverage
- 2. Find a better syntax than all these if statements
- 	...framework that takes an array of vers, and returns best base match
-	Add MSIE
-	Add Opera
+
+
 
 """
 
@@ -18,7 +18,7 @@ class Age(object):
 	def __init__(self, ua):
 		self.ua = ua
 
-	def getBrowser(self):
+	def getUa(self):
 		if 'Chrome' in self.ua:
 			return UaChrome(self.ua)
 		elif 'Firefox' in self.ua:
@@ -35,6 +35,9 @@ class Ua(object):
 		self.ua = ua
 
 	def getReleaseDate(self):
+		return 0
+
+	def getAge(self):
 		return 0
 
 class UaChrome(Ua):
@@ -115,6 +118,7 @@ class UaSafari(object):
 		return 0
 
 class UaOpera(object):
+	"""http://www.opera.com/docs/history/#o1202"""
 	def getReleaseDat(self):
 		# from 
 		return 0
