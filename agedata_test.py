@@ -9,10 +9,12 @@ class TestReleaseItem(unittest.TestCase):
 
 	def setUp(self):
 		self.r1 = ReleaseItem(['1','2', '3'], date(2009, 3, 1))
+		self.r2 = ReleaseItem(['12', '00'])
 
 	def testEq(self):
 		self.assertTrue(self.r1 == ReleaseItem(['1','2','3']))
 		self.assertTrue(self.r1 == ReleaseItem(['1','2','3', '0']))
+		self.assertTrue(self.r2 == ReleaseItem(['12','00']))
 	
 	def testLt(self):
 		self.assertTrue(self.r1 < ReleaseItem(['2','2','3']))

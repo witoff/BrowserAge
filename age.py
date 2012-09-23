@@ -1,5 +1,6 @@
 import re
 from datetime import *
+from agedata import AgeData, ReleaseItem
 
 """
 TODO:
@@ -8,117 +9,119 @@ TODO:
  ...Pull in a whole bunch of UAs from here: 
     See this: http://www.useragentstring.com/pages/All/
     And automate some testing for coverage
-
-
-
 """
 
 class Age(object):
-	
+	""" Assign Ua """
 	def __init__(self, ua):
-		self.ua = ua
+		self.ua = ua.lower()
 
 	def getUa(self):
-		if 'Chrome' in self.ua:
+		if 'chrome' in self.ua:
 			return UaChrome(self.ua)
-		elif 'Firefox' in self.ua:
+		elif 'firefox' in self.ua:
 			return UaFirefox(self.ua)
-		elif 'MSIE' in self.ua:
+		elif 'msie' in self.ua:
 			return UaMsie(self.ua)
-		elif 'Safari' in self.ua:
+		elif 'opera' in self.ua:
+			return UaOpera(self.ua)
+		elif 'safari' in self.ua:
 			return UaSafari(self.ua)
-
+		elif 'webkit' in self.ua:
+			return UaSafari(self.ua)
+		return None
 
 
 class Ua(object):
+	""" Get Version Elements and return age results """
 	def __init__(self, ua):
 		self.ua = ua
+		self.ageData = None
 
 	def getReleaseDate(self):
 		return 0
 
 	def getAge(self):
-		return 0
+		return datetime.now().date() - self.getReleaseDate()
 
 class UaChrome(Ua):
+	def __init__(self, ua):
+		super(UaChrome, self).__init__(ua)
+		self.ageData = AgeData('age-chrome.json')
+		self.ageData.load()
+
 	def getReleaseDate(self):
 		# http://www.oldapps.com/google_chrome.php
-		matches = re.compile('Chrome/[0-9\.]*').search(self.ua)
+		matches = re.compile('chrome/[a-z0-9\.]*').search(self.ua)
 		if not matches:
 			return None
 		self.verfull = matches.group().split('/')
 		self.vernums = self.verfull[1].split('.')
-		mj = int( self.vernums[0] )
 
-		if mj==1:
-			return date(2009, 4, 24)
-		if mj==2:
-			return date(2009,6,10)
-		if mj==3:
-			return date(2009,7,13)
-		if mj==4:
-			return date(2009,10,24)
-		if mj==5:
-			return date(2010,1,30)
-		if mj==6:
-			return date(2010,8,12)
-		if mj==7:
-			return date(2010,10,19)
-		if mj==8:
-			return date(2010,12,2)
-		if mj==9:
-			return date(2011,2,2)
-		if mj==10:
-			return date(2011,3,8)
-		if mj==11:
-			return date(2011,5,6)
-		if mj==12:
-			return date(2011,6,6)
-		if mj==13:
-			return date(2011,7,20)
-		if mj==14:
-			return date(2011,9,16)
-		if mj==15:
-			return date(2011,10,26)
-		if mj==16:
-			return date(2011,12,1)
-		if mj==17:
-			return date(2012,2,17)
-		if mj==18:
-			return date(2012,3,28)
-		if mj==19:
-			return date(2012,5,23)
-		if mj==20:
-			return date(2012,6,28)
-		if mj>=21:
-			return date(2012,7,31)
-		return None
+		return self.ageData.getDate(self.vernums)
 
-class UaFirefox(object):
+class UaFirefox(Ua):
+	def __init__(self, ua):
+		super(UaFirefox, self).__init__(ua)
+		self.ageData = AgeData('age-firefox.json')
+		self.ageData.load()
+
 	def getReleaseDate(self):
 		# https://wiki.mozilla.org/Releases/Old/2011 
-		matches = re.compile('Firefox/[a-zA-Z0-9\.]*').search(self.ua)
+		matches = re.compile('firefox/[a-z0-9\.]*').search(self.ua)
 		if not matches:
 			return None
 		self.verfull = matches.group().split('/')
 		self.vernums = self.verfull[1].split('.')
-		mj = int( self.vernums[0] )
 
-		if mj==1:
-			return date(2009, 4, 24)
+		return self.ageData.getDate(self.vernums)
 
-class UaMsie(object):
-	"""http://en.wikipedia.org/wiki/Timeline_of_web_browsers"""
+class UaMsie(Ua):
+	def __init__(self, ua):
+		super(UaMsie, self).__init__(ua)
+		self.ageData = AgeData('age-msie.json')
+		self.ageData.load()
+
 	def getReleaseDate(self):
-		return 0
+		"""http://en.wikipedia.org/wiki/Timeline_of_web_browsers"""
+		matches = re.compile('msie [a-z0-9\.]*').search(self.ua)
+		if not matches:
+			return None
+		self.verfull = matches.group().split(' ')
+		self.vernums = self.verfull[1].split('.')
+		return self.ageData.getDate(self.vernums)
 
-class UaSafari(object):
-	def getReleaseDat(self):
-		# from http://en.wikipedia.org/wiki/Safari_version_history
-		return 0
+class UaSafari(Ua):
 
-class UaOpera(object):
-	"""http://www.opera.com/docs/history/#o1202"""
-	def getReleaseDat(self):
-		# from 
-		return 0
+	def __init__(self, ua):
+		super(UaSafari, self).__init__(ua)
+		self.ageData = AgeData('age-webkit.json')
+		self.ageData.load()
+
+	def getReleaseDate(self):
+		""" http://en.wikipedia.org/wiki/Safari_version_history """
+		matches = re.compile('safari/[a-z0-9\.]*').search(self.ua)
+		if not matches:
+			return None
+		self.verfull = matches.group().split('/')
+		self.vernums = self.verfull[1].split('.')
+
+		return self.ageData.getDate(self.vernums)
+
+class UaOpera(Ua):
+	
+	def __init__(self, ua):
+		super(UaOpera, self).__init__(ua)
+		self.ageData = AgeData('age-opera.json')
+		self.ageData.load()
+
+	def getReleaseDate(self):
+		""" http://www.opera.com/docs/history/#o1202 """
+		matches = re.compile('version/[a-z0-9\.]*').search(self.ua)
+		if not matches:
+			return None
+		self.verfull = matches.group().split('/')
+		self.vernums = self.verfull[1].split('.')
+		
+		return self.ageData.getDate(self.vernums)
+
