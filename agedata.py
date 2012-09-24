@@ -1,5 +1,6 @@
 import json
 from datetime import date, datetime
+from os import path
 
 class ReleaseItem(object):
 	""" Hold and compare date elements """
@@ -78,7 +79,7 @@ class AgeData(object):
 	""" Access and Fit to Age Datasets """
 
 	def __init__(self, filename):
-		self.filename = filename
+		self.filename = path.join('data', filename)
 		self.releases = []
 
 	def load(self):
@@ -103,8 +104,7 @@ class AgeData(object):
 			ri = self.releases[i]
 
 			if ri >= releaseItem:
-				return ri.releaseDate
-		print 'NO MATCHES'
-		return datetime.now().date()
+				return self.releases[max(i-1,0)].releaseDate
+		return self.releases[-1].releaseDate
 
 
