@@ -5,6 +5,7 @@ from agedata import ReleaseItem
 from agedata import AgeData as Adata
 from datetime import date
 from age import *
+import json
 
 class TestAge(unittest.TestCase):
 
@@ -42,7 +43,25 @@ class TestAge(unittest.TestCase):
 		for u in UAs:
 			age = Age(u)
 			print 'UA: ', u
-			print '--Age: ', age.getUa().getAge()
+			print '--Age: ', age.getAge()
+
+	def testCoverage(self):
+		f = file('uas.json', 'r')
+		allUas = json.loads(f.read())
+		f.close()
+
+		failures = 0
+		ages = []
+		for u in allUas:
+			age = Age(u).getAge()
+			if age:
+				ages.append(age)
+			else:
+				failures += 1
+
+		print '%i/%i coverage for %.2f%%' % (len(ages), len(ages)+failures, 100.*len(ages)/(failures + len(ages)))
+
+
 		
 
 if __name__ == '__main__':

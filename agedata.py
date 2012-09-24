@@ -32,8 +32,8 @@ class ReleaseItem(object):
 
 		for i in range(len(self.ver)):
 
-			if i >= len(other.ver):
-				if ReleaseItem.has_non_zero_els(self.ver[i]):
+			if i == len(other.ver):
+				if ReleaseItem.has_non_zero_els(self.ver[i:]):
 					return 1
 				return 0
 
@@ -51,8 +51,10 @@ class ReleaseItem(object):
 			if self.ver[i] < other.ver[i]:
 				return -1
 		
-		if ReleaseItem.has_non_zero_els(other.ver[len(self.ver)]):
+		if len(self.ver) < len(other.ver) and \
+			ReleaseItem.has_non_zero_els(other.ver[len(self.ver):]):
 			return -1
+
 		return 0
 
 	def __gt__(self, other):

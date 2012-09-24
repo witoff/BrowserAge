@@ -4,17 +4,30 @@ from agedata import AgeData, ReleaseItem
 
 """
 TODO:
- ...Build a framework that takes an array of vers, and returns best base match
+ ...match against a linear regression
 
  ...Pull in a whole bunch of UAs from here: 
     See this: http://www.useragentstring.com/pages/All/
     And automate some testing for coverage
+
+ ... Cache arrays
+
+ ... More details in dicts
+
+ ... Hello world page at browserage.com
+
 """
 
 class Age(object):
 	""" Assign Ua """
 	def __init__(self, ua):
 		self.ua = ua.lower()
+
+	def getAge(self):
+		uAgent = self.getUa()
+		if not uAgent:
+			return None
+		return uAgent.getAge()
 
 	def getUa(self):
 		if 'chrome' in self.ua:
@@ -42,7 +55,10 @@ class Ua(object):
 		return 0
 
 	def getAge(self):
-		return datetime.now().date() - self.getReleaseDate()
+		rd = self.getReleaseDate()
+		if not rd:
+			return None
+		return datetime.now().date() - rd
 
 class UaChrome(Ua):
 	def __init__(self, ua):
