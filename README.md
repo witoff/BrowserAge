@@ -1,7 +1,7 @@
 BrowserAge
 ==========
 
-How old is your browser?
+How long has it been since your browser was released?
 
 # Usage:
 ```python
