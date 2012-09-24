@@ -5,6 +5,7 @@ from agedata import ReleaseItem
 from agedata import AgeData as Adata
 from datetime import date
 from age import *
+from os import path
 import json
 
 class TestAge(unittest.TestCase):
@@ -46,7 +47,7 @@ class TestAge(unittest.TestCase):
 			print '--Age: ', age.getAge()
 
 	def testCoverage(self):
-		f = file('uas.json', 'r')
+		f = file(path.join('data', 'uas.json'), 'r')
 		allUas = json.loads(f.read())
 		f.close()
 
