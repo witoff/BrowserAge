@@ -79,7 +79,8 @@ class AgeData(object):
 	""" Access and Fit to Age Datasets """
 
 	def __init__(self, filename):
-		self.filename = path.join('data', filename)
+		localPath = path.dirname(path.realpath(__file__))
+		self.filename = path.join(localPath, 'data', filename)
 		self.releases = []
 
 	def load(self):
