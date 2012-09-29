@@ -2,8 +2,6 @@ import json
 from datetime import date, datetime, timedelta
 from os import path
 
-PROPAGATION_LIMIT=2
-
 class ReleaseItem(object):
 	""" Hold and compare date elements """
 
@@ -96,7 +94,8 @@ class ReleaseItem(object):
 class AgeData(object):
 	""" Access and Fit to Age Datasets """
 
-	def __init__(self, filename):
+	def __init__(self, filename, propLimit=2):
+		self.propLimit=propLimit
 		localPath = path.dirname(path.realpath(__file__))
 		self.filename = path.join(localPath, 'data', filename)
 		self.versionElements = 0
@@ -207,10 +206,10 @@ class AgeData(object):
 
 		for i in range(self.versionElements):
 			if reference.ver[i]!=current.ver[i]:
-				totalTd = self.deltasAvg[i] * min(PROPAGATION_LIMIT, (current.ver[i] - reference.ver[i]))
+				totalTd = self.deltasAvg[i] * min(self.propLimit, (current.ver[i] - reference.ver[i]))
 				for j in range(i+1, len(self.deltasAvg)):
 					pass
-					totalTd += self.deltasAvg[j] * min(PROPAGATION_LIMIT, current.ver[j])
+					totalTd += self.deltasAvg[j] * min(self.propLimit, current.ver[j])
 				return min(datetime.today().date(), reference.releaseDate + totalTd)
 
 		i = self.versionElements-1

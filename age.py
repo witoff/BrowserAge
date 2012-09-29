@@ -66,7 +66,7 @@ class UaChrome(Ua):
 
 	def __init__(self):
 		super(UaChrome, self).__init__()
-		self.ageData = AgeData('age-chrome.json')
+		self.ageData = AgeData('age-chrome.json', propLimit=0)
 
 	def getParseOrder(self):
 		return 1
