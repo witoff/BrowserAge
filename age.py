@@ -27,6 +27,11 @@ class Age(object):
 		self.ua_raw = ua
 		self.ua = ua.lower()
 
+		#Cache values
+		self.age_c = None
+		self.browser_c = None
+		self.os_c = None
+
 		if not Age.brParsers:
 			Age.registerBrowserParsers()
 		if not Age.osParsers:
@@ -48,19 +53,19 @@ class Age(object):
 		return None
 
 	def getAge(self):
-		if self.brp:
-			return self.brp.getAge(self.ua)
-		return None
+		if not self.age_c and self.brp:
+			self.age_c = self.brp.getAge(self.ua)
+		return self.age_c
 
 	def getBrowser(self):
-		if self.brp:
-			return self.brp.getBrowser()
-		return None
+		if not self.browser_c and self.brp:
+			self.browser_c = self.brp.getBrowser()
+		return self.browser_c
 
 	def getOs(self):
-		if self.osp:
-			return self.osp.getOs()
-		return None
+		if not self.os_c and self.osp:
+			self.os_c = self.osp.getOs()
+		return self.os_c
 
 	@staticmethod
 	def registerBrowserParsers():
