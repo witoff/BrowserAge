@@ -211,10 +211,9 @@ class AgeData(object):
 				totalTd = self.deltasAvg[i] * min(PROPAGATION_LIMIT, (current.ver[i] - reference.ver[i]))
 				for j in range(i+1, len(self.deltasAvg)):
 					totalTd += self.deltasAvg[j] * min(PROPAGATION_LIMIT, current.ver[j])
-					pass
-
-				return reference.releaseDate + totalTd
+				return min(datetime.today().date(), reference.releaseDate + totalTd)
 
 		i = self.versionElements-1
-		return reference.releaseDate + self.deltasAvg[i] * (current.ver[i] - reference.ver[i])
+		nextDate = reference.releaseDate + self.deltasAvg[i] * (current.ver[i] - reference.ver[i])
+		min(datetime.today().date(), nextDate)
 
