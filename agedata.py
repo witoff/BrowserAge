@@ -2,7 +2,7 @@ import json
 from datetime import date, datetime, timedelta
 from os import path
 
-PROPAGATION_LIMIT=3
+PROPAGATION_LIMIT=2
 
 class ReleaseItem(object):
 	""" Hold and compare date elements """
@@ -179,7 +179,7 @@ class AgeData(object):
 				days = [d['delta'].days for d in self.deltas.get(i)]
 				self.deltasAvg.append( timedelta(sum(days)/float(len(days))) )
 			else:
-				self.deltasAvg.append(timedelta(0) if not self.deltasAvg else self.deltasAvg[i-1]/2)
+				self.deltasAvg.append(timedelta(0) if not self.deltasAvg else self.deltasAvg[i-1]*0)
 		#print self.deltasAvg		
 
 
@@ -202,7 +202,6 @@ class AgeData(object):
 
 	
 	def propagateDate(self, reference, current):
-
 		if reference==current:
 			return reference.releaseDate
 
@@ -210,6 +209,7 @@ class AgeData(object):
 			if reference.ver[i]!=current.ver[i]:
 				totalTd = self.deltasAvg[i] * min(PROPAGATION_LIMIT, (current.ver[i] - reference.ver[i]))
 				for j in range(i+1, len(self.deltasAvg)):
+					pass
 					totalTd += self.deltasAvg[j] * min(PROPAGATION_LIMIT, current.ver[j])
 				return min(datetime.today().date(), reference.releaseDate + totalTd)
 

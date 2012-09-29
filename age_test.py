@@ -39,13 +39,16 @@ class TestAge(unittest.TestCase):
 			'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US))',
 			'Mozilla/5.0 (Windows; U; Windows NT 6.1; tr-TR) AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 Safari/533.20.27',
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1',
-			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/537.4'
+			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/537.4',
+			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.14 (KHTML, like Gecko) Version/6.0.1 Safari/536.26.14'
 		]
 
 		for u in UAs:
 			age = Age(u)
+			num = age.getAge()
+
 			print 'UA: ', u
-			print '--Age: ', age.getAge()
+			print '--Age: ', num
 
 	def testCoverage(self):
 		f = file(path.join('data', 'uas.json'), 'r')

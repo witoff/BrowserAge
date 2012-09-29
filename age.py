@@ -153,7 +153,7 @@ class UaSafari(Ua):
 
 	def __init__(self):
 		super(UaSafari, self).__init__()
-		self.ageData = AgeData('age-webkit.json')
+		self.ageData = AgeData('age-safari.json')
 
 	def getParseOrder(self):
 		return 5
@@ -163,7 +163,8 @@ class UaSafari(Ua):
 
 	def getReleaseDate(self, ua):
 		""" http://en.wikipedia.org/wiki/Safari_version_history """
-		matches = re.compile('safari/[a-z0-9\.]*').search(ua)
+		#matches = re.compile('safari/[a-z0-9\.]*').search(ua)
+		matches = re.compile('version/[a-z0-9\.]*').search(ua)
 		if not matches:
 			return None
 		self.verfull = matches.group().split('/')
