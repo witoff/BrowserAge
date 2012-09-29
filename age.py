@@ -20,16 +20,23 @@ class Age(object):
 	""" Assign Ua """
 	parsers = None
 	def __init__(self, ua):
-		self.ua = ua.lower()
+		self.raw_ua = ua.lower()
 		if not Age.parsers:
 			Age.registerParsers()
 
+		self.ua = None
+		for uap in Age.parsers:
+			if uap.doesMatch(self.raw_ua):
+				self.ua = uap
+				break
 
 	def getAge(self):
-		ua = self.getUa()
-		if not ua:
+		if not self.ua:
 			return None
-		return ua.getAge(self.ua)
+		return self.ua.getAge(self.raw_ua)
+
+	def getBrowser(self):
+		return ua.getBrowser()
 
 	@staticmethod
 	def registerParsers():
@@ -37,10 +44,7 @@ class Age(object):
 		Age.parsers.sort(key=lambda p: p.getParseOrder())
        
 	def getUa(self):
-		for ua in Age.parsers:
-			if ua.doesMatch(self.ua):
-				return ua
-		return None
+		return self.ua
 
 class Ua(object):
 	""" Get Version Elements and return age results """
@@ -55,6 +59,9 @@ class Ua(object):
 
 	def getReleaseDate(self):
 		return 0
+
+	def getBrowser(self):
+		return ''
 
 	def getAge(self, ua):
 		rd = self.getReleaseDate(ua)
@@ -73,6 +80,9 @@ class UaChrome(Ua):
 
 	def doesMatch(self, ua):
 		return ua and 'chrome' in ua
+
+	def getBrowser(self):
+		return 'chrome'
 
 	def getReleaseDate(self, ua):
 		# http://www.oldapps.com/google_chrome.php
@@ -96,6 +106,9 @@ class UaFirefox(Ua):
 	def doesMatch(self, ua):
 		return ua and 'firefox' in ua
 
+	def getBrowser(self):
+		return 'firefox'
+
 	def getReleaseDate(self, ua):
 		# https://wiki.mozilla.org/Releases/Old/2011 
 		matches = re.compile('firefox/[a-z0-9\.]*').search(ua)
@@ -118,6 +131,9 @@ class UaMsie(Ua):
 	def doesMatch(self, ua):
 		return ua and 'msie' in ua
 
+	def getBrowser(self):
+		return 'msie'
+
 	def getReleaseDate(self, ua):
 		"""http://en.wikipedia.org/wiki/Timeline_of_web_browsers"""
 		matches = re.compile('msie [a-z0-9\.]*').search(ua)
@@ -138,6 +154,9 @@ class UaOpera(Ua):
 
 	def doesMatch(self, ua):
 		return ua and 'opera' in ua
+
+	def getBrowser(self):
+		return 'opera'
 
 	def getReleaseDate(self, ua):
 		""" http://www.opera.com/docs/history/#o1202 """
@@ -161,6 +180,9 @@ class UaSafari(Ua):
 	def doesMatch(self, ua):
 		return ua and 'safari' in ua
 
+	def getBrowser(self):
+		return 'safari'
+
 	def getReleaseDate(self, ua):
 		""" http://en.wikipedia.org/wiki/Safari_version_history """
 		#matches = re.compile('safari/[a-z0-9\.]*').search(ua)
@@ -183,6 +205,9 @@ class UaWebkit(Ua):
 
 	def doesMatch(self, ua):
 		return ua and 'webkit' in ua
+
+	def getBrowser(self):
+		return 'webkit'
 
 	def getReleaseDate(self, ua):
 		""" http://en.wikipedia.org/wiki/Safari_version_history """
