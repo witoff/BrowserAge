@@ -14,7 +14,7 @@ class ReleaseItem(object):
 
 		#Coerce to an int version
 		for i in range(len(self.ver)):
-			if self.ver[i].__class__ in [unicode, str]:
+			if isinstance(self.ver[i], basestring):
 				intVer = int('0'+ ''.join([s for s in self.ver[i] if s.isdigit()]))
 				self.ver[i] = intVer
 
