@@ -1,5 +1,7 @@
 #! /usr/bin/python
 
+import sys
+sys.path.append('..')
 import unittest
 from agedata import ReleaseItem
 from agedata import AgeData as Adata
@@ -57,7 +59,7 @@ class TestAge(unittest.TestCase):
 			print '--Os: ', os
 
 	def testCoverage(self):
-		f = file(path.join('data', 'uas.json'), 'r')
+		f = file(path.join('..','data', 'uas.json'), 'r')
 		allUas = json.loads(f.read())
 		f.close()
 

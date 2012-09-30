@@ -1,6 +1,9 @@
 #! /usr/bin/python
 
 import unittest
+import sys
+
+sys.path.append('..')
 from agedata import ReleaseItem
 from agedata import AgeData as Adata
 from datetime import date, timedelta
