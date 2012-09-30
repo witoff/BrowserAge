@@ -77,7 +77,7 @@ class OspAndroid(OsParser):
 class OspLinux(OsParser):
 
 	def __init__(self):
-		self.matcher = re.compile('\(.*.linux*\)', re.IGNORECASE)
+		self.matcher = re.compile('\(.*linux.*\)', re.IGNORECASE)
 
 	def getParseOrder(self):
 		return 2
