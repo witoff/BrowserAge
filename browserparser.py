@@ -43,6 +43,7 @@ class BrpChrome(BrowserParser):
 
 	def getReleaseDate(self, ua):
 		# http://www.oldapps.com/google_chrome.php
+		# http://googlechromereleases.blogspot.com/search/label/Stable%20updates
 		matches = re.compile('chrome/[a-z0-9\.]*').search(ua)
 		if not matches:
 			return None
